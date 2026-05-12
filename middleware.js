@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
 
 export function middleware(request) {
-  const token = request.cookies.get("recapp-auth")?.value;
+  const token  = request.cookies.get("recapp-auth")?.value;
+  const secret = process.env.AUTH_SECRET;
   const { pathname } = request.nextUrl;
 
   const isLoginPage = pathname === "/login";
-  const isValid = token === process.env.AUTH_SECRET;
+  // Both must exist and match — if AUTH_SECRET is undefined, always block
+  const isValid = !!secret && !!token && token === secret;
 
   // Already logged in → skip login page
   if (isValid && isLoginPage) {
