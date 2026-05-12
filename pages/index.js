@@ -345,12 +345,12 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>RecApp</title>
+        <title>RecapHQ</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
       <div className="header">
-        <img src="/logo-recapp.png" alt="RecApp" className="header-logo" />
+        <img src="/logo-recaphq.png" alt="RecapHQ" className="header-logo" />
         <button
           className="btn-logout"
           onClick={async () => {

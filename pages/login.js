@@ -38,14 +38,14 @@ export default function Login() {
   return (
     <>
       <Head>
-        <title>RecApp — Login</title>
+        <title>RecapHQ — Login</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
       <div className="login-page">
         <div className="login-card">
           <div className="login-logo-wrap">
-            <img src="/logo-recapp.png" alt="RecApp" className="login-logo" />
+            <img src="/logo-recaphq.png" alt="RecapHQ" className="login-logo" />
           </div>
 
           <p className="login-subtitle">Accedi per continuare</p>

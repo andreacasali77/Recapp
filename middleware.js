@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 export function middleware(request) {
-  const token  = request.cookies.get("recapp-auth")?.value;
+  const token  = request.cookies.get("recaphq-auth")?.value;
   const secret = process.env.AUTH_SECRET;
   const { pathname } = request.nextUrl;
 
@@ -25,6 +25,6 @@ export function middleware(request) {
 export const config = {
   // Protect all pages except static assets, API routes and login
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|logo-recapp.png|api/).*)",
+    "/((?!_next/static|_next/image|favicon.ico|logo-recaphq.png|api/).*)",
   ],
 };

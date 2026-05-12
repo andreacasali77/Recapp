@@ -16,7 +16,7 @@ export default function handler(req, res) {
     // Set secure HTTP-only cookie valid for 7 days
     res.setHeader(
       "Set-Cookie",
-      `recapp-auth=${secret}; HttpOnly; Path=/; Max-Age=${60 * 60 * 24 * 7}; SameSite=Lax${
+      `recaphq-auth=${secret}; HttpOnly; Path=/; Max-Age=${60 * 60 * 24 * 7}; SameSite=Lax${
         process.env.NODE_ENV === "production" ? "; Secure" : ""
       }`
     );
