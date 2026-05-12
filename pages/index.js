@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { generateWordDoc } from "../lib/generateDocx";
 import { mapLabel } from "../lib/labelMap";
 
@@ -233,6 +234,7 @@ const EMPTY_FORM = {
 // ── Main component ────────────────────────────────────────────────────────────
 
 export default function Home() {
+  const router = useRouter();
   const [form, setForm] = useState(EMPTY_FORM);
   const [generating, setGenerating] = useState(false);
   const [generateStatus, setGenerateStatus] = useState(""); // progress message
@@ -349,6 +351,15 @@ export default function Home() {
 
       <div className="header">
         <img src="/logo-recapp.png" alt="RecApp" className="header-logo" />
+        <button
+          className="btn-logout"
+          onClick={async () => {
+            await fetch("/api/auth/logout", { method: "POST" });
+            router.replace("/login");
+          }}
+        >
+          Esci
+        </button>
       </div>
 
       <main className="main">
