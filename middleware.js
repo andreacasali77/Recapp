@@ -25,6 +25,6 @@ export function middleware(request) {
 export const config = {
   // Protect all pages except static assets, API routes and login
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|logo-recaphq.png|api/).*)",
+    "/((?!_next/static|_next/image|favicon\\.ico|.*\\.png|.*\\.html|.*\\.svg|api/).*)",
   ],
 };

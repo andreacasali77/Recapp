@@ -350,7 +350,7 @@ export default function Home() {
       </Head>
 
       <div className="header">
-        <img src="/logo-recaphq.png" alt="RecapHQ" className="header-logo" />
+        <img src="/logo-recaphq.svg" alt="RecapHQ" className="header-logo" />
         <button
           className="btn-logout"
           onClick={async () => {

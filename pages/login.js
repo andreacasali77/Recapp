@@ -45,7 +45,7 @@ export default function Login() {
       <div className="login-page">
         <div className="login-card">
           <div className="login-logo-wrap">
-            <img src="/logo-recaphq.png" alt="RecapHQ" className="login-logo" />
+            <img src="/logo-recaphq.svg" alt="RecapHQ" className="login-logo" />
           </div>
 
           <p className="login-subtitle">Accedi per continuare</p>
