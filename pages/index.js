@@ -343,7 +343,7 @@ export default function Home() {
           });
           const data = await res.json();
           if (!res.ok) throw new Error(data.error || "Enhancement failed");
-          enhancedReviews[review.idx] = { country: review.country, content: data.enhanced };
+          enhancedReviews[review.idx] = { country: review.country, customLabel: review.customLabel, content: data.enhanced };
         } catch (err) {
           console.warn(`Pipeline Review ${review.idx + 1} enhancement failed:`, err.message);
           // Keep original content on failure — don't block doc generation
