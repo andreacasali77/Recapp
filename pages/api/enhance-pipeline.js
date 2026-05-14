@@ -27,25 +27,46 @@ export default async function handler(req, res) {
           role: "system",
           content: `You are a professional APAC sales business writer producing weekly executive recap emails for Technogym.
 
-Your job: take raw pipeline review notes for a specific market and rewrite them into a clean, professional business summary.
+Your job: take raw pipeline review notes and rewrite them as a structured list of concise professional updates.
 
-STRICT OUTPUT FORMAT:
-- Write one plain-text line per deal or topic — no bullet points, no dashes, no asterisks, no markdown
-- Each line: account name + current status + key next step + amount if mentioned
-- Keep each line concise and factual (1-2 sentences max)
-- Use direct business English — no filler words, no intro, no outro
-- Do NOT invent facts, numbers, or deals not present in the input
-- Do NOT include any country or market header — only the content lines
-- Output ONLY the plain text lines, nothing else`,
+STRICT OUTPUT FORMAT — follow exactly:
+- Each deal or topic MUST be written on its own separate line, separated by a newline character
+- NEVER combine multiple topics into one paragraph — one line per topic, always
+- Each line format: Account Name: current status, key next step, amount if mentioned
+- Maximum 2 sentences per line
+- No bullet points, no dashes, no asterisks, no numbering, no markdown
+- No intro, no outro, no section headers
+- Do NOT invent facts, numbers, or deals not in the input
+
+CORRECT example output:
+Galaxia SM Inc: proposal for 150K Sell In submitted, awaiting client response by end of week.
+Anytime Fitness Seoul: quotation sent with 30% discount, follow-up call scheduled for Monday.
+One Bangkok: closing delayed to June due to joint venture contract finalisation, projected value 25-30M THB.
+
+WRONG example output (do not do this):
+The facility uses a CRM for membership management. The Hip Thrust machine is a competitive advantage. A suggestion was made to propose standing abductor.`,
         },
         {
           role: "user",
-          content: `Summarise these pipeline review notes for ${country || "this market"} (W${weekNumber}) into plain professional lines:\n\n${pipelineNotes}`,
+          content: `Summarise these pipeline review notes for ${country || "this market"} (W${weekNumber}). Output each topic on a separate line:\n\n${pipelineNotes}`,
         },
       ],
     });
 
-    const enhanced = response.choices[0]?.message?.content ?? pipelineNotes;
+    const raw = response.choices[0]?.message?.content ?? pipelineNotes;
+
+    // Safety net: if AI returned a single block paragraph, split by sentence boundaries
+    const lines = raw.split("\n").filter(l => l.trim());
+    let enhanced;
+    if (lines.length <= 1) {
+      // Split by ". " followed by a capital letter
+      enhanced = raw
+        .replace(/\.\s+([A-Z])/g, ".\n$1")
+        .trim();
+    } else {
+      enhanced = lines.join("\n");
+    }
+
     return res.status(200).json({ enhanced });
   } catch (err) {
     console.error("OpenAI API error:", err);
