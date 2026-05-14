@@ -678,6 +678,26 @@ body {
   border-bottom-right-radius: 7px !important;
 }
 
+.pipeline-cliente-wrap {
+  margin-top: 0;
+}
+
+.pipeline-cliente-input {
+  width: 100%;
+  padding: 9px 36px 9px 12px;
+  border: 1.5px solid #f7c800;
+  border-radius: 7px;
+  font-size: 13.5px;
+  color: #1a2357;
+  background: #fffef0;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.pipeline-cliente-input:focus {
+  border-color: #e6b800;
+}
+
 /* ── Pipeline AI note ─────────────────────────────────────────────────────── */
 .pipeline-ai-note {
   font-size: 12px;

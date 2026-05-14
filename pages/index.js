@@ -128,7 +128,7 @@ const COUNTRIES = [
 const NUM_PIPELINE_REVIEWS = 7;
 
 function makePipeline() {
-  return { country: "", content: "" };
+  return { country: "", customLabel: "", content: "" };
 }
 
 // ── SmartNumericField ─────────────────────────────────────────────────────────
@@ -182,6 +182,7 @@ function SmartNumericField({ value, onChange, error, placeholder }) {
 
 function PipelineReviewField({ index, value, onChange }) {
   const label = index === 0 ? "Pipeline Review" : `Pipeline Review ${index + 1}`;
+  const isCliente = value.country === "__cliente__";
 
   return (
     <div className="pipeline-block">
@@ -190,14 +191,32 @@ function PipelineReviewField({ index, value, onChange }) {
         <select
           className="pipeline-country-select"
           value={value.country}
-          onChange={(e) => onChange({ ...value, country: e.target.value })}
+          onChange={(e) => onChange({ ...value, country: e.target.value, customLabel: "" })}
         >
           <option value="">— Select country / market —</option>
+          <option value="__cliente__">Cliente (inserisci nome)</option>
+          <option disabled>──────────────</option>
           {COUNTRIES.map((c) => (
             <option key={c} value={c}>{c}</option>
           ))}
         </select>
       </div>
+
+      {isCliente && (
+        <div className="field-textarea-wrap pipeline-cliente-wrap">
+          <input
+            type="text"
+            className="pipeline-cliente-input"
+            placeholder="Nome cliente / azienda…"
+            value={value.customLabel || ""}
+            onChange={(e) => onChange({ ...value, customLabel: e.target.value })}
+            autoFocus
+          />
+          {value.customLabel && (
+            <button className="btn-clear-field" onClick={() => onChange({ ...value, customLabel: "" })} title="Clear">✕</button>
+          )}
+        </div>
+      )}
 
       <div className="field-textarea-wrap">
         <textarea
