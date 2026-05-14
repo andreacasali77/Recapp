@@ -245,7 +245,8 @@ const EMPTY_FORM = {
   salesSubsidiaries: "",
   opportunitiesWon: "",
   ordersUnderDiscussion: "",
-  salesBacklog: "",
+  salesBacklogCurrent: "",
+  salesBacklogPrev: "",
   pipelineReviews: Array.from({ length: NUM_PIPELINE_REVIEWS }, makePipeline),
   extraSections: [],
 };
@@ -500,12 +501,6 @@ export default function Home() {
               hint: "Deal C: in Negotiation (200K Sell In)\nDeal D: pending PO signature (90K)",
               rows: 4,
             },
-            {
-              key: "salesBacklog",
-              label: "Sales + Backlog",
-              hint: "3,200,000 Euro (+5.2% vs PY)",
-              rows: 2,
-            },
           ].map((f) => (
             <div className="field-row" key={f.key}>
               <label className="field-label">{f.label}</label>
@@ -526,6 +521,64 @@ export default function Home() {
               </div>
             </div>
           ))}
+
+          {/* Sales + Backlog — two numeric inputs */}
+          <div className="field-row">
+            <label className="field-label">Sales + Backlog</label>
+            <div className="field-input-wrap">
+              <div className="backlog-inputs">
+                <div className="backlog-input-group">
+                  <label className="backlog-sub-label">Anno corrente</label>
+                  <div className="field-textarea-wrap">
+                    <input
+                      type="number"
+                      className="backlog-number-input"
+                      placeholder="es. 5497000"
+                      value={form.salesBacklogCurrent}
+                      onChange={(e) => updateField("salesBacklogCurrent", e.target.value)}
+                      min="0"
+                    />
+                    {form.salesBacklogCurrent && (
+                      <button className="btn-clear-field" onClick={() => updateField("salesBacklogCurrent", "")} title="Clear">✕</button>
+                    )}
+                  </div>
+                </div>
+                <div className="backlog-input-group">
+                  <label className="backlog-sub-label">Anno precedente</label>
+                  <div className="field-textarea-wrap">
+                    <input
+                      type="number"
+                      className="backlog-number-input"
+                      placeholder="es. 4500000"
+                      value={form.salesBacklogPrev}
+                      onChange={(e) => updateField("salesBacklogPrev", e.target.value)}
+                      min="0"
+                    />
+                    {form.salesBacklogPrev && (
+                      <button className="btn-clear-field" onClick={() => updateField("salesBacklogPrev", "")} title="Clear">✕</button>
+                    )}
+                  </div>
+                </div>
+              </div>
+              {(() => {
+                const cur = parseFloat(form.salesBacklogCurrent);
+                const prev = parseFloat(form.salesBacklogPrev);
+                if (!form.salesBacklogCurrent || isNaN(cur)) return null;
+                const formatted = cur.toLocaleString("en-US");
+                if (!form.salesBacklogPrev || isNaN(prev) || prev === 0) {
+                  return <div className="backlog-preview">{formatted} Euro</div>;
+                }
+                const pct = ((cur - prev) / prev * 100).toFixed(1);
+                const sign = parseFloat(pct) >= 0 ? "+" : "";
+                return (
+                  <div className={`backlog-preview${parseFloat(pct) >= 0 ? " backlog-preview--up" : " backlog-preview--down"}`}>
+                    {formatted} Euro ({sign}{pct}% vs PY)
+                  </div>
+                );
+              })()}
+              <span className="field-hint">Calcola automaticamente la variazione % vs anno precedente</span>
+            </div>
+          </div>
 
           {/* ══ PIPELINE REVIEWS ═════════════════════════════════════════════ */}
           <div className="section-header section-header--pipeline">PIPELINE REVIEWS</div>
